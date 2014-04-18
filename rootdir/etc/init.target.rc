@@ -1,0 +1,199 @@
+# Copyright (c) 2011-2012, The Linux Foundation. All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are
+# met:
+#     * Redistributions of source code must retain the above copyright
+#       notice, this list of conditions and the following disclaimer.
+#     * Redistributions in binary form must reproduce the above
+#       copyright notice, this list of conditions and the following
+#       disclaimer in the documentation and/or other materials provided
+#       with the distribution.
+#     * Neither the name of The Linux Foundation nor the names of its
+#       contributors may be used to endorse or promote products derived
+#       from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED
+# WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT
+# ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS
+# BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+# BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+# WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE
+# OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN
+# IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+#
+on early-boot
+    start comp-set
+    start version-set
+
+on init
+    mkdir /variant 0555 system system
+    mkdir /preload 0555 system system
+
+    # Filesystem debugfs
+    mkdir /mnt/debugfs 0700 root system
+    mount debugfs debugfs /mnt/debugfs gid=1000
+
+on post-fs
+    exec /system/bin/sh /system/etc/init.qcom.thermald_conf.sh
+
+    #Borqs Created tmp directory for CSVT LoopBack Call
+    mkdir /data/tmp 0771 radio radio
+
+    chmod 2770 /data/radio
+
+service ril-qmi /system/bin/sh /init.qcom.ril.path.sh
+    class main
+    user root
+    oneshot
+
+service nvbk_storage /system/bin/nvbk_storage
+    class late_start
+    user root
+    disabled
+
+on property:ro.boot.emmc=true
+    start nvbk_storage
+
+on early-init
+#    mkdir /storage/emmc 0000 system system
+
+service ft_fwupdate /system/bin/sh /system/etc/init.ft.fwupdate.sh
+    class late_start
+    user root
+    oneshot
+
+service comp-set /system/bin/sh /system/etc/init.qcom.composition_type.sh
+    class late_start
+    user root
+    critical
+    disabled
+    oneshot
+
+service version-set /system/bin/sh /system/etc/init.target.8x25.sh
+    class late_start
+    user root
+    critical
+    disabled
+    oneshot
+
+service sd_hot_plug /system/bin/sh /system/etc/init.qcom.sd_hot_plug.sh
+    user root
+    critical
+    disabled
+    oneshot
+
+on boot
+    start qcamerasvr
+    start gpu_dcvsd
+    start psensorCal
+    # zRAM
+    write /proc/sys/vm/page-cluster 0
+
+    ###CSVT #######
+    chmod 0777 /dev/smd11
+
+    chown system system /sys/power/autosleep
+    chown system system /sys/bus/platform/devices/fastboot/fastboot
+    chown system system /sys/bus/platform/devices/fastboot/resume
+    chown system system /sys/class/compass/akm8975/delay_acc
+    chown system system /sys/class/compass/akm8975/delay_mag
+    chown system system /sys/class/compass/akm8975/delay_ori
+    chown system system /sys/class/compass/akm8975/enable_acc
+    chown system system /sys/class/compass/akm8975/enable_mag
+    chown system system /sys/class/compass/akm8975/enable_ori
+    chown system system /sys/class/compass/akm8975/accel
+    chown input system /sys/bus/i2c/devices/1-0039/enable_als_sensor
+    chown input system /sys/bus/i2c/devices/1-0039/enable_ps_sensor
+    chown input system /sys/bus/i2c/devices/1-0039/ps_sensor_thld
+    chown input system /sys/bus/i2c/devices/1-0039/als_poll_delay
+    chmod 0664 /sys/bus/i2c/devices/1-0039/enable_als_sensor
+    chmod 0664 /sys/bus/i2c/devices/1-0039/enable_ps_sensor
+    chmod 0664 /sys/bus/i2c/devices/1-0039/ps_sensor_thld
+    chmod 0664 /sys/bus/i2c/devices/1-0039/als_poll_delay
+    chown input  system /sys/devices/i2c-1/1-000f/enable
+    chmod 0664 /sys/devices/i2c-1/1-000f/enable
+    # Permissions for Sensors
+    chmod 0666  /dev/ltr559_ls
+    chmod 0666  /dev/ltr559_ps
+    #modify gsensor file node mode
+    chown root system /sys/class/input/input2/delay
+
+    chmod 0666 /dev/glanceview
+    chmod 0666 /dev/gv_oneled
+
+    # insert the system monitor modules
+    insmod /system/lib/modules/sm_event_log.ko
+    insmod /system/lib/modules/sm_event_driver.ko
+
+# Set CSVT audio echo Path
+    setprop vt.audio.useecho 0
+    setprop vt.audio.usemvs 1
+
+# set core dump param
+    setrlimit 4 ${persist.sys.coredump} ${persist.sys.coredump}
+    write /proc/sys/kernel/core_pattern |/system/bin/coredump\ core-%e-%p-%t-%s
+
+# Configure and enable KSM
+    write /sys/kernel/mm/ksm/pages_to_scan 100
+    write /sys/kernel/mm/ksm/sleep_millisecs 500
+    write /sys/kernel/mm/ksm/run 1
+
+#AKM8975 sensor daemon
+service akmd /system/bin/akmdfs -m2
+    class main
+    user compass
+    group compass misc input
+    disabled
+
+#start camera server as daemon
+service qcamerasvr /system/bin/mm-qcamera-daemon
+        class late_start
+        user camera
+        group camera system inet audio
+
+service thermald /system/bin/thermald
+   class late_start
+   user root
+   group root
+   disabled
+
+service mpdecision /system/bin/mpdecision --no_sleep --avg_comp
+        class late_start
+	user root
+	disabled
+
+on property:sys.radio.shutdown=true
+   exec /system/bin/sh /system/etc/init.qcom.efs.sync.sh
+
+service gpu_dcvsd /system/bin/gpu_dcvsd
+    class late_start
+    user root
+    oneshot
+
+#service qosmgrd /system/bin/qosmgr /system/etc/qosmgr_rules.xml
+#    user system
+#    group system
+#    disabled
+
+#shenzhiyong@byd.com add for psensor calibration
+service psensorCal /system/bin/psensorCal
+    class late_start
+    user root
+    oneshot
+
+on fs
+    # Failure to mount any partition in fstab file results in failure to launch late-start class.
+    mount_all fstab.qcom
+    # zRAM
+    swapon_all /fstab.atlas40
+
+# 2013-09-11  Li Tao  fix Normandy_P003603, touch pannel testAllFilesInSysAreNotWritable
+on property:persist.radio.tp.upgrade=1
+    chmod 766 /sys/bus/i2c/devices/1-0038/fwupdate
+on property:persist.radio.tp.upgrade=0
+    chmod 664 /sys/bus/i2c/devices/1-0038/fwupdate
