@@ -1,0 +1,34 @@
+From f9115ce08d1160c86e1231c416d7b76f8cbdd73e Mon Sep 17 00:00:00 2001
+From: DavidVaz <vazdavid@icloud.com>
+Date: Fri, 18 Apr 2014 23:03:19 +0200
+Subject: [PATCH] Fix build error
+
+---
+ charger/charger.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/charger/charger.c b/charger/charger.c
+index 0f479ff..1f1fab2 100644
+--- a/charger/charger.c
++++ b/charger/charger.c
+@@ -1306,7 +1306,7 @@ int main(int argc, char **argv)
+     charger->uevent_fd = fd;
+     coldboot(charger, "/sys/class/power_supply", "add");
+ 
+-    ret = res_create_display_surface("charger/battery_fail", &charger->surf_unknown);
++    //ret = res_create_display_surface("charger/battery_fail", &charger->surf_unknown);
+     if (ret < 0) {
+         LOGE("Cannot load image\n");
+         charger->surf_unknown = NULL;
+@@ -1315,7 +1315,7 @@ int main(int argc, char **argv)
+     for (i = 0; i < charger->batt_anim->num_frames; i++) {
+         struct frame *frame = &charger->batt_anim->frames[i];
+ 
+-        ret = res_create_display_surface(frame->name, &frame->surface);
++        //ret = res_create_display_surface(frame->name, &frame->surface);
+         if (ret < 0) {
+             LOGE("Cannot load image %s\n", frame->name);
+             /* TODO: free the already allocated surfaces... */
+-- 
+1.8.3.2
+
