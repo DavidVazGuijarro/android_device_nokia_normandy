@@ -59,16 +59,16 @@ BOARD_USES_ADRENO_200 := true
 TARGET_KERNEL_SOURCE := kernel/nokia/normandy
 TARGET_KERNEL_CONFIG := cyanogenmod_normandy_defconfig
 
-KERNEL_EXTERNAL_MODULES:
-	mkdir -p $(KERNEL_MODULES_OUT)/ath6kl
-	rm -rf $(TARGET_OUT_INTERMEDIATES)/compat-wireless
-	cp -a device/nokia/normandy/compat-wireless $(TARGET_OUT_INTERMEDIATES)/
-	$(MAKE) -C $(TARGET_OUT_INTERMEDIATES)/compat-wireless KLIB=$(KERNEL_OUT) KLIB_BUILD=$(KERNEL_OUT) ARCH="arm" CROSS_COMPILE="arm-eabi-"
-	rm $(KERNEL_MODULES_OUT)/cfg80211.ko
-	$(TARGET_OBJCOPY) --strip-unneeded $(TARGET_OUT_INTERMEDIATES)/compat-wireless/cfg80211.ko $(KERNEL_MODULES_OUT)/ath6kl/cfg80211.ko
-	$(TARGET_OBJCOPY) --strip-unneeded $(TARGET_OUT_INTERMEDIATES)/compat-wireless/wlan.ko $(KERNEL_MODULES_OUT)/ath6kl/ath6kl_sdio.ko
-	ln -sf /system/lib/modules/ath6kl/cfg80211.ko $(KERNEL_MODULES_OUT)/cfg80211.ko
-	ln -sf /system/lib/modules/ath6kl/ath6kl_sdio.ko $(KERNEL_MODULES_OUT)/wlan.ko
+#KERNEL_EXTERNAL_MODULES:
+#	mkdir -p $(KERNEL_MODULES_OUT)/ath6kl
+#	rm -rf $(TARGET_OUT_INTERMEDIATES)/compat-wireless
+#	cp -a device/nokia/normandy/compat-wireless $(TARGET_OUT_INTERMEDIATES)/
+#	$(MAKE) -C $(TARGET_OUT_INTERMEDIATES)/compat-wireless KLIB=$(KERNEL_OUT) KLIB_BUILD=$(KERNEL_OUT) ARCH="arm" CROSS_COMPILE="arm-eabi-"
+#	rm $(KERNEL_MODULES_OUT)/cfg80211.ko
+#	$(TARGET_OBJCOPY) --strip-unneeded $(TARGET_OUT_INTERMEDIATES)/compat-wireless/cfg80211.ko $(KERNEL_MODULES_OUT)/ath6kl/cfg80211.ko
+#	$(TARGET_OBJCOPY) --strip-unneeded $(TARGET_OUT_INTERMEDIATES)/compat-wireless/wlan.ko $(KERNEL_MODULES_OUT)/ath6kl/ath6kl_sdio.ko
+#	ln -sf /system/lib/modules/ath6kl/cfg80211.ko $(KERNEL_MODULES_OUT)/cfg80211.ko
+#	ln -sf /system/lib/modules/ath6kl/ath6kl_sdio.ko $(KERNEL_MODULES_OUT)/wlan.ko
 
 TARGET_KERNEL_MODULES := KERNEL_EXTERNAL_MODULES
 
