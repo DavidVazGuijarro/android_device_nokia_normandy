@@ -53,10 +53,6 @@ cfg80211-y += net/wireless/core.o net/wireless/sysfs.o net/wireless/radiotap.o n
 cfg80211-y += net/wireless/mlme.o net/wireless/ibss.o net/wireless/sme.o net/wireless/chan.o net/wireless/ethtool.o net/wireless/mesh.o
 cfg80211-$(CONFIG_CFG80211_DEBUGFS) += net/wireless/debugfs.o
 cfg80211-y += net/wireless/wext-compat.o net/wireless/wext-sme.o
-cfg80211-y += net/wireless/regdb.o
-
-$(obj)/net/wireless/regdb.c:  $(PWD)/../../../../..$(src)/net/wireless/db.txt $(PWD)/../../../../..$(src)/net/wireless/genregdb.awk
-	@$(AWK) -f $(PWD)/../../../../..$(src)/net/wireless/genregdb.awk < $< > $@
 
 clean-files := net/wireless/regdb.c
 
