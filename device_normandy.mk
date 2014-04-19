@@ -185,7 +185,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.multisim.config=dsds \
     persist.sys.usb.config=mtp,adb \
     wlan.driver.ath=1 \
-    ro.config.low_ram=true
+    ro.config.low_ram=false
 
 # QC Perf
 PRODUCT_PROPERTY_OVERRIDES += \
