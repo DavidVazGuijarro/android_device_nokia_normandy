@@ -1,6 +1,6 @@
 #!/system/bin/sh
 #
-# Copyright (c) 2013 Qualcomm Technologies, Inc.  All Rights Reserved.
+# Copyright (c) 2015 Qualcomm Technologies, Inc.  All Rights Reserved.
 # Qualcomm Technologies Proprietary and Confidential.
 #
 #Usage firmware must name in following format "<project_name>_<ic_name>_<module_ID>_ver<fw_version_ID>_app.bin"

@@ -1,4 +1,4 @@
-# Copyright 2011 The Android Open Source Project
+# Copyright 2015 The Android Open Source Project
 
 #AUDIO_POLICY_TEST := true
 #ENABLE_AUDIO_DUMP := true

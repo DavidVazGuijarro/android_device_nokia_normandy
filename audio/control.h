@@ -1,4 +1,4 @@
-/* Copyright (c) 2009-2011 by Qualcomm Technologies, Inc.  All Rights Reserved.
+/* Copyright (c) 2015 by Qualcomm Technologies, Inc.  All Rights Reserved.
  * Qualcomm Technologies Proprietary and Confidential.
  */
 #ifndef ALSA_CONTROL_H

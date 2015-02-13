@@ -46,5 +46,5 @@ for FILE in `egrep -v '(^#|^$)' ../$DEVICE/proprietary-files.txt`; do
     fi
 done
 
-echo "This is designed to extract files from an official cm-11.0 build"
+echo "This is designed to extract files from an official cm-12.0 build"
 ./setup-makefiles.sh

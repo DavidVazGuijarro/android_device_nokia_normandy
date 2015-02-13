@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2013 The CyanogenMod Project
+# Copyright (C) 2015 The CyanogenMod Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,15 +14,13 @@
 # limitations under the License.
 #
 
-$(call inherit-product, frameworks/native/build/phone-hdpi-512-dalvik-heap.mk)
-
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
 LOCAL_PATH := device/nokia/normandy
 
 DEVICE_PACKAGE_OVERLAYS := device/nokia/normandy/overlay
 
-PRODUCT_LOCALES := en_US
+PRODUCT_LOCALES := es_ES
 PRODUCT_LOCALES += hdpi
 PRODUCT_AAPT_CONFIG := normal hdpi
 PRODUCT_AAPT_PREF_CONFIG := hdpi
@@ -53,6 +51,10 @@ PRODUCT_COPY_FILES += \
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/media/media_profiles.xml:system/etc/media_profiles.xml \
     $(LOCAL_PATH)/media/media_codecs_7627a.xml:system/etc/media_codecs.xml
+
+# Wifi
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/prebuilt/wlan.ko:lib/modules/wlan.ko
 
 # Audio
 PRODUCT_PACKAGES += \
@@ -124,17 +126,9 @@ PRODUCT_PACKAGES += \
 
 # OMX
 PRODUCT_PACKAGES += \
-    libdivxdrmdecrypt \
     libmm-omxcore \
     libOmxCore \
-    libstagefrighthw \
-    libOmxVdec \
-    libOmxVenc \
-    libOmxVidEnc \
-    libOmxAacEnc \
-    libOmxAmrEnc \
-    libOmxEvrcEnc \
-    libOmxQcelp13Enc
+    libstagefrighthw
     
 # Ramdisk
 PRODUCT_PACKAGES += \
@@ -172,7 +166,7 @@ PRODUCT_PACKAGES += \
     thermald-8x25-msm2-msm_therm.conf \
     thermald-8x25-msm2-pmic_therm.conf
 
-# Wifi
+# WiFi
 PRODUCT_PACKAGES += \
     p2p_supplicant_overlay.conf \
     wpa_supplicant_overlay.conf
@@ -185,7 +179,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
     persist.multisim.config=dsds \
     persist.sys.usb.config=mtp,adb \
     wlan.driver.ath=1 \
-    ro.config.low_ram=false
+    ro.config.low_ram=true
 
 # QC Perf
 PRODUCT_PROPERTY_OVERRIDES += \

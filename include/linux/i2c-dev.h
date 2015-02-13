@@ -1,8 +1,8 @@
 /*
     i2c-dev.h - i2c-bus driver, char device interface
 
-    Copyright (C) 1995-97 Simon G. Vogl
-    Copyright (C) 1998-99 Frodo Looijaard <frodol@dds.nl>
+    Copyright (C) 2015 Simon G. Vogl
+    Copyright (C) 2015 Frodo Looijaard <frodol@dds.nl>
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

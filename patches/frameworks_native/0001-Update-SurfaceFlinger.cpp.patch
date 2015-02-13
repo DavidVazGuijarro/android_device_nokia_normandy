@@ -1,0 +1,27 @@
+From f6b8eb17050fda1feea3f4a12d5d744ef9d23efc Mon Sep 17 00:00:00 2001
+From: Y300-0100 <bosko.brajovich@gmail.com>
+Date: Sat, 30 Aug 2014 11:31:13 +0200
+Subject: [PATCH] Update SurfaceFlinger.cpp
+
+---
+ services/surfaceflinger/SurfaceFlinger.cpp | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/services/surfaceflinger/SurfaceFlinger.cpp b/services/surfaceflinger/SurfaceFlinger.cpp
+index eecaa01..f3d7bae 100644
+--- a/services/surfaceflinger/SurfaceFlinger.cpp
++++ b/services/surfaceflinger/SurfaceFlinger.cpp
+@@ -82,10 +82,6 @@
+ #include "SecTVOutService.h"
+ #endif
+ 
+-#ifdef QCOM_BSP
+-#include <display_config.h>
+-#endif
+-
+ #define DISPLAY_COUNT       1
+ 
+ /*
+-- 
+1.9.1
+

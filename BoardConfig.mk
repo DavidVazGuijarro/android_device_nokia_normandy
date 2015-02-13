@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2014 The CyanogenMod Project
+# Copyright (C) 2015 The CyanogenMod Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -56,19 +56,19 @@ TARGET_BOARD_PLATFORM_GPU := qcom-adreno203
 BOARD_USES_ADRENO_200 := true
 
 # Inline kernel building
-TARGET_KERNEL_SOURCE := kernel/nokia/normandy
+TARGET_KERNEL_SOURCE := kernel
 TARGET_KERNEL_CONFIG := cyanogenmod_normandy_defconfig
 
-#KERNEL_EXTERNAL_MODULES:
-#	mkdir -p $(KERNEL_MODULES_OUT)/ath6kl
-#	rm -rf $(TARGET_OUT_INTERMEDIATES)/compat-wireless
-#	cp -a device/nokia/normandy/compat-wireless $(TARGET_OUT_INTERMEDIATES)/
-#	$(MAKE) -C $(TARGET_OUT_INTERMEDIATES)/compat-wireless KLIB=$(KERNEL_OUT) KLIB_BUILD=$(KERNEL_OUT) ARCH="arm" CROSS_COMPILE="arm-eabi-"
-#	rm $(KERNEL_MODULES_OUT)/cfg80211.ko
-#	$(TARGET_OBJCOPY) --strip-unneeded $(TARGET_OUT_INTERMEDIATES)/compat-wireless/cfg80211.ko $(KERNEL_MODULES_OUT)/ath6kl/cfg80211.ko
-#	$(TARGET_OBJCOPY) --strip-unneeded $(TARGET_OUT_INTERMEDIATES)/compat-wireless/wlan.ko $(KERNEL_MODULES_OUT)/ath6kl/ath6kl_sdio.ko
-#	ln -sf /system/lib/modules/ath6kl/cfg80211.ko $(KERNEL_MODULES_OUT)/cfg80211.ko
-#	ln -sf /system/lib/modules/ath6kl/ath6kl_sdio.ko $(KERNEL_MODULES_OUT)/wlan.ko
+KERNEL_EXTERNAL_MODULES:
+	mkdir -p $(KERNEL_MODULES_OUT)/ath6kl
+	rm -rf $(TARGET_OUT_INTERMEDIATES)/compat-wireless
+	cp -a device/nokia/normandy/compat-wireless $(TARGET_OUT_INTERMEDIATES)/
+	$(MAKE) -C $(TARGET_OUT_INTERMEDIATES)/compat-wireless KLIB=$(KERNEL_OUT) KLIB_BUILD=$(KERNEL_OUT) ARCH="arm" CROSS_COMPILE="arm-eabi-"
+	rm $(KERNEL_MODULES_OUT)/cfg80211.ko
+	$(TARGET_OBJCOPY) --strip-unneeded $(TARGET_OUT_INTERMEDIATES)/compat-wireless/cfg80211.ko $(KERNEL_MODULES_OUT)/ath6kl/cfg80211.ko
+	$(TARGET_OBJCOPY) --strip-unneeded $(TARGET_OUT_INTERMEDIATES)/compat-wireless/wlan.ko $(KERNEL_MODULES_OUT)/ath6kl/ath6kl_sdio.ko
+	ln -sf /system/lib/modules/ath6kl/cfg80211.ko $(KERNEL_MODULES_OUT)/cfg80211.ko
+	ln -sf /system/lib/modules/ath6kl/ath6kl_sdio.ko $(KERNEL_MODULES_OUT)/wlan.ko
 
 TARGET_KERNEL_MODULES := KERNEL_EXTERNAL_MODULES
 
@@ -107,7 +107,7 @@ COMMON_GLOBAL_CFLAGS += -DQCOM_FM_ENABLED
 BOARD_HAVE_QCOM_FM := true
 TARGET_PROVIDES_LIBAUDIO := true
 TARGET_HAS_QACT := true
-TARGET_QCOM_AUDIO_VARIANT := legacy
+TARGET_QCOM_AUDIO_VARIANT := caf
 BOARD_USES_LEGACY_ALSA_AUDIO := true
 
 # Bluetooth
@@ -117,9 +117,6 @@ BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/nokia/normandy/bluetooth
 # Camera
 COMMON_GLOBAL_CFLAGS += -DMR0_CAMERA_BLOB -DNEEDS_VECTORIMPL_SYMBOLS
 
-# Dalvik
-TARGET_ARCH_LOWMEM := true
-
 # Display
 USE_OPENGL_RENDERER := true
 TARGET_QCOM_DISPLAY_VARIANT := legacy
@@ -128,9 +125,8 @@ BOARD_EGL_WORKAROUND_BUG_10194508 := true
 BOARD_USE_MHEAP_SCREENSHOT := true
 
 # Media
-TARGET_QCOM_MEDIA_VARIANT := caf
+TARGET_QCOM_MEDIA_VARIANT := legacy
 TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
-COMMON_GLOBAL_CFLAGS += -DQCOM_NO_SECURE_PLAYBACK
 
 # Storage / Sharing
 BOARD_VOLD_MAX_PARTITIONS := 35
@@ -143,33 +139,33 @@ BOARD_USES_QCOM_GPS := true
 BOARD_VENDOR_QCOM_GPS_LOC_API_AMSS_VERSION := 50000
 BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := default
 
+# RIL
+BOARD_RIL_CLASS := ../../../device/nokia/normandy/ril/
+
 # Webkit
 ENABLE_WEBGL := true
 PRODUCT_PREBUILT_WEBVIEWCHROMIUM := yes
 TARGET_FORCE_CPU_UPLOAD := true
 
 # WLAN
-BOARD_HAS_ATH_WLAN          := true
-BOARD_WLAN_DEVICE := ath6kl
-BOARD_WPA_SUPPLICANT_DRIVER := NL80211
+BOARD_HAS_ATH_WLAN               := true
+BOARD_WLAN_DEVICE                := ath6kl
+BOARD_WPA_SUPPLICANT_DRIVER      := NL80211
 BOARD_WPA_SUPPLICANT_PRIVATE_LIB := lib_driver_cmd_ath6kl
-BOARD_HOSTAPD_DRIVER        := NL80211
-BOARD_HOSTAPD_PRIVATE_LIB := lib_driver_cmd_ath6kl
-WPA_SUPPLICANT_VERSION      := VER_0_8_X
-HOSTAPD_VERSION             := VER_0_8_X
-WIFI_EXT_MODULE_PATH        := "/system/lib/modules/cfg80211.ko"
-WIFI_EXT_MODULE_NAME        := "cfg80211"
-WIFI_EXT_MODULE_ARG         := ""
-WIFI_DRIVER_MODULE_PATH     := "/system/lib/modules/wlan.ko"
-WIFI_DRIVER_MODULE_NAME     := "wlan"
-WIFI_DRIVER_MODULE_ARG      := ""
-WIFI_TEST_INTERFACE         := "sta"
-WIFI_DRIVER_FW_PATH_STA     := "sta"
-WIFI_DRIVER_FW_PATH_AP      := "ap"
-WIFI_DRIVER_FW_PATH_P2P     := "p2p"
-
-# Assert
-TARGET_OTA_ASSERT_DEVICE := normandy,msm8625
+BOARD_HOSTAPD_DRIVER        	 := NL80211
+BOARD_HOSTAPD_PRIVATE_LIB   	 := lib_driver_cmd_ath6kl
+WPA_SUPPLICANT_VERSION      	 := VER_0_8_X
+HOSTAPD_VERSION             	 := VER_0_8_X
+WIFI_EXT_MODULE_PATH        	 := "/system/lib/modules/cfg80211.ko"
+WIFI_EXT_MODULE_NAME        	 := "cfg80211"
+WIFI_EXT_MODULE_ARG         	 := ""
+WIFI_DRIVER_MODULE_PATH     	 := "/system/lib/modules/wlan.ko"
+WIFI_DRIVER_MODULE_NAME     	 := "wlan"
+WIFI_DRIVER_MODULE_ARG      	 := ""
+WIFI_TEST_INTERFACE         	 := "sta"
+WIFI_DRIVER_FW_PATH_STA     	 := "sta"
+WIFI_DRIVER_FW_PATH_AP      	 := "ap"
+WIFI_DRIVER_FW_PATH_P2P     	 := "p2p"
 
 # Recovery
 TARGET_RECOVERY_FSTAB := device/nokia/normandy/rootdir/etc/fstab.qcom

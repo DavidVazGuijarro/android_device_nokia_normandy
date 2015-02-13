@@ -1,0 +1,57 @@
+[    
+    {
+        "remote": "gh",
+        "repository": "dhacker29/android_device_qcom_msm8625",
+        "target_path": "device/qcom/msm8625",
+        "revision": "jellybean"
+    },
+    {
+        "remote": "gh",
+        "repository": "dhacker29/android_vendor_nokia_normandy",
+        "target_path": "vendor/nokia/normandy",
+        "revision": "cm-11.0"
+    },
+    {
+        "remote": "gh",
+        "repository": "dhacker29/android_kernel_nokia_normandy",
+        "target_path": "kernel/nokia/normandy",
+        "revision": "cm-11.0"
+    },
+    {
+        "remote": "gh",
+        "repository": "Dazzozo/android_hardware_atheros_wifi_ath6kl-huawei",
+        "target_path": "hardware/atheros/wifi/ath6kl",
+        "revision": "master"
+    },
+    {
+        "remote": "gh",
+        "repository": "legaCyMod/android_hardware_atheros_wlan",
+        "target_path": "hardware/atheros/wlan",
+        "revision": "cm-11.0"
+    },    
+    {
+        "remote": "gh",
+        "repository": "Dazzozo/android_external_webkit",
+        "target_path": "external/webkit",
+        "revision": "kitkat"
+    },
+    {
+        "remote": "gh",
+        "repository": "Dazzozo/android_hardware_qcom_display-legacy",
+        "target_path": "hardware/qcom/display-legacy",
+        "revision": "jellybean-mr2"
+    },
+    {
+        "remote": "gh",
+        "repository": "Dazzozo/android_hardware_qcom_media-legacy",
+        "target_path": "hardware/qcom/media-legacy",
+        "revision": "kitkat"
+    },    
+    {
+        "remote": "cm",
+        "repository": "android_hardware_qcom_fm",
+        "target_path": "hardware/qcom/fm",
+        "revision": "cm-11.0"
+    }    
+]
+
